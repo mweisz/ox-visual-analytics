@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <meta charset="utf-8">
 <style>
 
@@ -66,9 +67,17 @@ d3.csv("../data/population_merged.csv", function(error, myData) {
 
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
-    return (d != "Region" && d != "Country or SR") && (y[d] = d3.scale.linear()
+    if (d == 'Region' || d == 'Country or SR') { // Categorical Data
+        y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([height, 0]);
+    } else { // Numerical Data
+      y[d] = d3.scale.linear()
         .domain(d3.extent(myData, function(p) { return +p[d]; }))
-        .range([height, 0]));
+        .range([height, 0]);
+    }
+
+    return true;
   }));
 
   // Extract colours for each region
@@ -146,7 +155,7 @@ d3.csv("../data/population_merged.csv", function(error, myData) {
       .attr("x", -8)
       .attr("width", 16);
 
-      
+
 });
 
 function position(d) {

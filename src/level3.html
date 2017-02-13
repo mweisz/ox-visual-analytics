@@ -55,20 +55,33 @@ var line = d3.svg.line(),
 
 var color;
 
+var brightnessScale;
+
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("../data/population_merged.csv", function(error, myData) {
+d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
+
+  console.log(myData);
 
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
-    if (d == 'Region' || d == 'Country or SR') { // Categorical Data
+    if (d == 'Region Name') { // Categorical Data
         y[d] = d3.scale.ordinal()
             .domain(myData.map(function(p) { return p[d]; }))
             .rangePoints([height, 0]);
+    } else if(d == 'Year') {
+
+        y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([height, 0]);
+
+      brightnessScale= d3.scale.linear()
+       .domain(d3.extent(myData, function(p) { return +p[d]; }))
+       .range([0.5, -0.5]);
     } else { // Numerical Data
       y[d] = d3.scale.linear()
         .domain(d3.extent(myData, function(p) { return +p[d]; }))
@@ -82,6 +95,8 @@ d3.csv("../data/population_merged.csv", function(error, myData) {
   color = d3.scale.ordinal()
             .domain(myData.map( function (d) { return d['Region']; }))
             .range(d3.scale.category10().range());
+
+  console.log(color.range());
 
   // Add grey background lines for context.
   background = svg.append("g")
@@ -99,7 +114,7 @@ d3.csv("../data/population_merged.csv", function(error, myData) {
     .enter().append("path")
       .attr("d", path)
       .attr('stroke', function(d) {
-       return color(d['Region']); });
+       return ColorLuminance(color(d['Region']), brightnessScale(d['Year'])); });
 
   // Add a group element for each dimension.
   var g = svg.selectAll(".dimension")
@@ -110,8 +125,6 @@ d3.csv("../data/population_merged.csv", function(error, myData) {
       .call(d3.behavior.drag()
         .origin(function(d) { return {x: x(d)}; })
         .on("dragstart", function(d) {
-          console.log(dimensions)
-
           dragging[d] = x(d);
           background.attr("visibility", "hidden");
         })
@@ -123,8 +136,6 @@ d3.csv("../data/population_merged.csv", function(error, myData) {
           g.attr("transform", function(d) { return "translate(" + position(d) + ")"; })
         })
         .on("dragend", function(d) {
-          console.log(dimensions)
-            
           delete dragging[d];
           transition(d3.select(this)).attr("transform", "translate(" + x(d) + ")");
           transition(foreground).attr("d", path);
@@ -186,6 +197,26 @@ function brush() {
       return extents[i][0] <= d[p] && d[p] <= extents[i][1];
     }) ? null : "none";
   });
+}
+
+function ColorLuminance(hex, lum) {
+
+  // validate hex string
+  hex = String(hex).replace(/[^0-9a-f]/gi, '');
+  if (hex.length < 6) {
+    hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  }
+  lum = lum || 0;
+
+  // convert to decimal and change luminosity
+  var rgb = "#", c, i;
+  for (i = 0; i < 3; i++) {
+    c = parseInt(hex.substr(i*2,2), 16);
+    c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+    rgb += ("00"+c).substr(c.length);
+  }
+
+  return rgb;
 }
 
 </script>

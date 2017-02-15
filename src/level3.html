@@ -35,6 +35,7 @@ svg {
   cursor: move;
 }
 
+
 </style>
 <body>
 <script src="//d3js.org/d3.v3.min.js"></script>
@@ -63,9 +64,11 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var csvData;
 d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
 
-  console.log(myData);
+  csvData = myData;
+   console.log(myData);
 
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
@@ -96,7 +99,6 @@ d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
             .domain(myData.map( function (d) { return d['Region']; }))
             .range(d3.scale.category10().range());
 
-  console.log(color.range());
 
   // Add grey background lines for context.
   background = svg.append("g")
@@ -114,7 +116,7 @@ d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
     .enter().append("path")
       .attr("d", path)
       .attr('stroke', function(d) {
-       return ColorLuminance(color(d['Region']), brightnessScale(d['Year'])); });
+       return colorIntensity(color(d['Region']), brightnessScale(d['Year'])); });
 
   // Add a group element for each dimension.
   var g = svg.selectAll(".dimension")
@@ -160,14 +162,16 @@ d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
   g.append("g")
       .attr("class", "brush")
       .each(function(d) {
-        d3.select(this).call(y[d].brush = d3.svg.brush().y(y[d]).on("brushstart", brushstart).on("brush", brush));
+        d3.select(this).call(y[d].brush = d3.svg.brush().y(y[d]).on("brushstart", brushstart).on("brush", brush).on('brushend', brushend));
       })
     .selectAll("rect")
       .attr("x", -8)
       .attr("width", 16);
 
 
+
 });
+
 
 function position(d) {
   var v = dragging[d];
@@ -188,6 +192,10 @@ function brushstart() {
   d3.event.sourceEvent.stopPropagation();
 }
 
+function brushend(d) {
+  showLineChart(d)
+}
+
 // Handles a brush event, toggling the display of foreground lines.
 function brush() {
   var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
@@ -206,7 +214,7 @@ function brush() {
   });
 }
 
-function ColorLuminance(hex, lum) {
+function colorIntensity(hex, lum) {
 
   // validate hex string
   hex = String(hex).replace(/[^0-9a-f]/gi, '');
@@ -226,4 +234,10 @@ function ColorLuminance(hex, lum) {
   return rgb;
 }
 
+
+
 </script>
+<script src="js/level3.js"></script>
+
+<h2 id="subgraph-title"></h2>
+<div id="graph" class="aGraph" ></div>

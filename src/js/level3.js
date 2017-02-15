@@ -11,11 +11,15 @@ function showLineChart(dimensionName) {
         // var aggregateData(csvData, dimensionName);
         // create a simple dataTime array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
         var dataTime = aggregateData(csvData, dimensionName);
-        console.log(dataTime);
+
+        var maxYValue = 0
+        for (var i = 0; i < dataTime.length; i++) {
+            maxYValue = Math.max(maxYValue, dataTime[i].avg)
+        } 
 
 
         // Clear previous graph 
-        // document.getElementById("graph").innerHTML = ""
+        document.getElementById("graph").innerHTML = ""
         document.getElementById("subgraph-title").innerHTML = "Average: "+ dimensionName
 
         // X scale will fit all values from dataTime[] within pixels 0-w
@@ -24,10 +28,16 @@ function showLineChart(dimensionName) {
         //     .rangePoints([height, 0]);
         // var xTime = d3.scale.ordinal().domain([1995, 2000, 2005, 2010, 2015]).range([0, w]);
         // var xTime = d3.scale.linear().domain([0, 6]).range([0, w]);
-        var xTime = d3.scale.linear().domain([0, 5]).range([0, w]);
+        // var xTime = d3.scale.linear().domain([0, 5]).range([0, w]);
          // var xTime = d3.scale.ordinal().domain([1995, 2000, 2005, 2010, 2015]).rangeRoundBands([0, width]);
+
+
+         var xTime = d3.scale.ordinal().domain(dataTime.map(function(d) { return d.year; })).rangeRoundBands([0, w]);
+        // xTime.domain(dataTime.map(function(d) { return d.year; }));
+
         // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-        var yTime = d3.scale.linear().domain([0, d3.max(dataTime)]).range([h, 0]);
+        var yTime = d3.scale.linear().domain([0, maxYValue]).range([h, 0]);
+        // var yTime = d3.scale.linear().domain([0, d3.max(dataTime)]).range([h, 0]);
 
         // xTime.domain(dataTime.map(function(d) { console.log(d); return years[d] }));
             // automatically determining max range can work something like this
@@ -36,16 +46,10 @@ function showLineChart(dimensionName) {
         var line = d3.svg.line()
             // assign the X function to plot our line as we wish
             .x(function(d,i) { 
-                // verbose logging to show what's actually being done
-                //console.log('Plotting X value for dataTime point: ' + d + ' using index: ' + i + ' to be at: ' + xTime(i) + ' using our xScale.');
-                // return the X coordinate where we want to plot this dataTimepoint
-                return xTime(i); 
+                return xTime(d.year) + m[0]; 
             })
             .y(function(d) { 
-                // verbose logging to show what's actually being done
-                //console.log('Plotting Y value for dataTime point: ' + d + ' to be at: ' + yTime(d) + " using our yScale.");
-                // return the Y coordinate where we want to plot this dataTimepoint
-                return yTime(d); 
+                return yTime(d.avg); 
             })
             // Add an SVG element with the desired dimensions and margin.
             var graph = d3.select("#graph").append("svg:svg")
@@ -82,7 +86,7 @@ function aggregateData(data, dimension) {
     var averages = [0, 0, 0, 0, 0, 0 ]
 
 
-    for (y in years) {
+    for (var y in years) {
         year = years[y]
 
         var count = 0
@@ -94,5 +98,17 @@ function aggregateData(data, dimension) {
         }
         averages[y] = averages[y] / count
     }
-    return averages;
+
+    var output = [
+        {"year": "1990", "avg" : averages[0]},
+        {"year": "1995", "avg" : averages[1]},
+        {"year": "2000", "avg" : averages[2]},
+        {"year": "2005", "avg" : averages[3]},
+        {"year": "2010", "avg" : averages[4]},
+        {"year": "2015", "avg" : averages[5]}
+
+    ]
+    return output;
+
+
 }

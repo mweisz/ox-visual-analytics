@@ -11,19 +11,35 @@ var line = d3.svg.line(),
     background,
     foreground;
 
+var color;
+
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("../data/world-economy-2015.csv", function(error, myData) {
+d3.csv("../data/population_merged.csv", function(error, myData) {
+
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
-    return d != "Region Name" && (y[d] = d3.scale.linear()
+    if (d == 'Region' || d == 'Country or SR') { // Categorical Data
+        y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([height, 0]);
+    } else { // Numerical Data
+      y[d] = d3.scale.linear()
         .domain(d3.extent(myData, function(p) { return +p[d]; }))
-        .range([height, 0]));
+        .range([height, 0]);
+    }
+
+    return true;
   }));
+
+  // Extract colours for each region
+  color = d3.scale.ordinal()
+            .domain(myData.map( function (d) { return d['Region']; }))
+            .range(d3.scale.category10().range());
 
   // Add grey background lines for context.
   background = svg.append("g")
@@ -39,7 +55,9 @@ d3.csv("../data/world-economy-2015.csv", function(error, myData) {
     .selectAll("path")
       .data(myData)
     .enter().append("path")
-      .attr("d", path);
+      .attr("d", path)
+      .attr('stroke', function(d) {
+       return color(d['Region']); });
 
   // Add a group element for each dimension.
   var g = svg.selectAll(".dimension")
@@ -50,6 +68,8 @@ d3.csv("../data/world-economy-2015.csv", function(error, myData) {
       .call(d3.behavior.drag()
         .origin(function(d) { return {x: x(d)}; })
         .on("dragstart", function(d) {
+          console.log(dimensions)
+
           dragging[d] = x(d);
           background.attr("visibility", "hidden");
         })
@@ -61,6 +81,8 @@ d3.csv("../data/world-economy-2015.csv", function(error, myData) {
           g.attr("transform", function(d) { return "translate(" + position(d) + ")"; })
         })
         .on("dragend", function(d) {
+          console.log(dimensions)
+            
           delete dragging[d];
           transition(d3.select(this)).attr("transform", "translate(" + x(d) + ")");
           transition(foreground).attr("d", path);
@@ -90,6 +112,8 @@ d3.csv("../data/world-economy-2015.csv", function(error, myData) {
     .selectAll("rect")
       .attr("x", -8)
       .attr("width", 16);
+
+
 });
 
 function position(d) {
@@ -103,7 +127,8 @@ function transition(g) {
 
 // Returns the path for a given data point.
 function path(d) {
-  return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+  var p = line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+  return p;
 }
 
 function brushstart() {
@@ -116,7 +141,14 @@ function brush() {
       extents = actives.map(function(p) { return y[p].brush.extent(); });
   foreground.style("display", function(d) {
     return actives.every(function(p, i) {
-      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+      var selection = d[p];
+
+      // Make Brushing work for categorial axis
+      if (p == 'Region' || p == 'Country or SR') { 
+        selection = y[p](d[p]);
+      }
+
+      return extents[i][0] <= selection && selection <= extents[i][1];
     }) ? null : "none";
   });
 }

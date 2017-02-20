@@ -26,7 +26,6 @@ var csvData;
 d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
 
   csvData = myData;
-   console.log(myData);
 
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {

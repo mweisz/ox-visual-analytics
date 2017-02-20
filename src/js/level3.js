@@ -1,114 +1,193 @@
-function showLineChart(dimensionName) {
-  console.log('Line Chart from ', dimensionName)
 
-        var m = [80, 80, 80, 80]; // margins
-        var w = 1000 - m[1] - m[3]; // width
-        var h = 400 - m[0] - m[2]; // height
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-        var years = [1995, 2000, 2005, 2010, 2015];
-        
+var x = d3.scale.ordinal().rangePoints([0, width], 1),
+    y = {},
+    dragging = {};
 
-        // var aggregateData(csvData, dimensionName);
-        // create a simple dataTime array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
-        var dataTime = aggregateData(csvData, dimensionName);
+var line = d3.svg.line(),
+    axis = d3.svg.axis().orient("left"),
+    background,
+    foreground;
 
-        var maxYValue = 0
-        for (var i = 0; i < dataTime.length; i++) {
-            maxYValue = Math.max(maxYValue, dataTime[i].avg)
-        } 
+var color;
 
+var brightnessScale;
 
-        // Clear previous graph 
-        document.getElementById("graph").innerHTML = ""
-        document.getElementById("subgraph-title").innerHTML = "Average: "+ dimensionName
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        // X scale will fit all values from dataTime[] within pixels 0-w
-        // d3.scale.ordinal()
-        //     .domain(myData.map(function(p) { return p[d]; }))
-        //     .rangePoints([height, 0]);
-        // var xTime = d3.scale.ordinal().domain([1995, 2000, 2005, 2010, 2015]).range([0, w]);
-        // var xTime = d3.scale.linear().domain([0, 6]).range([0, w]);
-        // var xTime = d3.scale.linear().domain([0, 5]).range([0, w]);
-         // var xTime = d3.scale.ordinal().domain([1995, 2000, 2005, 2010, 2015]).rangeRoundBands([0, width]);
+var csvData;
+d3.csv("../data/world-economy-1990-2015.csv", function(error, myData) {
 
+  csvData = myData;
+   console.log(myData);
 
-         var xTime = d3.scale.ordinal().domain(dataTime.map(function(d) { return d.year; })).rangeRoundBands([0, w]);
-        // xTime.domain(dataTime.map(function(d) { return d.year; }));
+  // Extract the list of dimensions and create a scale for each.
+  x.domain(dimensions = d3.keys(myData[0]).filter(function(d) {
+    if (d == 'Region Name') { // Categorical Data
+        y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([height, 0]);
+    } else if(d == 'Year') {
 
-        // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-        var yTime = d3.scale.linear().domain([0, maxYValue]).range([h, 0]);
-        // var yTime = d3.scale.linear().domain([0, d3.max(dataTime)]).range([h, 0]);
+        y[d] = d3.scale.ordinal()
+            .domain(myData.map(function(p) { return p[d]; }))
+            .rangePoints([height, 0]);
 
-        // xTime.domain(dataTime.map(function(d) { console.log(d); return years[d] }));
-            // automatically determining max range can work something like this
-            // var y = d3.scale.linear().domain([0, d3.max(dataTime)]).range([h, 0]);
-        // create a line function that can convert dataTime[] into x and y points
-        var line = d3.svg.line()
-            // assign the X function to plot our line as we wish
-            .x(function(d,i) { 
-                return xTime(d.year) + m[0]; 
-            })
-            .y(function(d) { 
-                return yTime(d.avg); 
-            })
-            // Add an SVG element with the desired dimensions and margin.
-            var graph = d3.select("#graph").append("svg:svg")
-                  .attr("width", w + m[1] + m[3])
-                  .attr("height", h + m[0] + m[2])
-                .append("svg:g")
-                  .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-            
-            // create yAxis
-            var xAxis = d3.svg.axis().scale(xTime).ticks(5).orient("bottom");
-            // var xAxis = d3.svg.axis().scale(xTime).ticks(5).orient("bottom");
-            // Add the x-axis.
-            graph.append("svg:g")
-                  .attr("class", "x axis")
-                  .attr("transform", "translate(0," + h + ")")
-                  .call(xAxis);
-            // create left yAxis
-            var yAxisLeft = d3.svg.axis().scale(yTime).ticks(4).orient("left");
-            // Add the y-axis to the left
-            graph.append("svg:g")
-                  .attr("class", "y axis")
-                  .attr("transform", "translate(-25,0)")
-                  .call(yAxisLeft);
-            
-            // Add the line by appending an svg:path element with the dataTime line we created above
-            // do this AFTER the axes above so that the line is above the tick-lines
-            graph.append("svg:path").attr("d", line(dataTime)).attr('fill', 'none').attr('stroke', 'blue');
-            
-}
-
-function aggregateData(data, dimension) {
-    var years = ["1990", "1995", "2000", "2005", "2010", "2015"]
-
-    var averages = [0, 0, 0, 0, 0, 0 ]
-
-
-    for (var y in years) {
-        year = years[y]
-
-        var count = 0
-        for (var i = 0; i < data.length; i++) {
-            if (data[i]['Year'] == year) {
-                averages[y] += parseFloat(data[i][dimension]);
-                count++;
-            }
-        }
-        averages[y] = averages[y] / count
+      brightnessScale= d3.scale.linear()
+       .domain(d3.extent(myData, function(p) { return +p[d]; }))
+       .range([0.5, -0.5]);
+    } else { // Numerical Data
+      y[d] = d3.scale.linear()
+        .domain(d3.extent(myData, function(p) { return +p[d]; }))
+        .range([height, 0]);
     }
 
-    var output = [
-        {"year": "1990", "avg" : averages[0]},
-        {"year": "1995", "avg" : averages[1]},
-        {"year": "2000", "avg" : averages[2]},
-        {"year": "2005", "avg" : averages[3]},
-        {"year": "2010", "avg" : averages[4]},
-        {"year": "2015", "avg" : averages[5]}
+    return true;
+  }));
 
-    ]
-    return output;
+  // Extract colours for each region
+  color = d3.scale.ordinal()
+            .domain(myData.map( function (d) { return d['Region']; }))
+            .range(d3.scale.category10().range());
 
 
+  // Add grey background lines for context.
+  background = svg.append("g")
+      .attr("class", "background")
+    .selectAll("path")
+      .data(myData)
+    .enter().append("path")
+      .attr("d", path);
+
+  // Add blue foreground lines for focus.
+  foreground = svg.append("g")
+      .attr("class", "foreground")
+    .selectAll("path")
+      .data(myData)
+    .enter().append("path")
+      .attr("d", path)
+      .attr('stroke', function(d) {
+       return colorIntensity(color(d['Region']), brightnessScale(d['Year'])); });
+
+  // Add a group element for each dimension.
+  var g = svg.selectAll(".dimension")
+      .data(dimensions)
+    .enter().append("g")
+      .attr("class", "dimension")
+      .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
+      .call(d3.behavior.drag()
+        .origin(function(d) { return {x: x(d)}; })
+        .on("dragstart", function(d) {
+          dragging[d] = x(d);
+          background.attr("visibility", "hidden");
+        })
+        .on("drag", function(d) {
+          dragging[d] = Math.min(width, Math.max(0, d3.event.x));
+          foreground.attr("d", path);
+          dimensions.sort(function(a, b) { return position(a) - position(b); });
+          x.domain(dimensions);
+          g.attr("transform", function(d) { return "translate(" + position(d) + ")"; })
+        })
+        .on("dragend", function(d) {
+          delete dragging[d];
+          transition(d3.select(this)).attr("transform", "translate(" + x(d) + ")");
+          transition(foreground).attr("d", path);
+          background
+              .attr("d", path)
+            .transition()
+              .delay(500)
+              .duration(0)
+              .attr("visibility", null);
+        }));
+
+  // Add an axis and title.
+  g.append("g")
+      .attr("class", "axis")
+      .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
+    .append("text")
+      .style("text-anchor", "middle")
+      .attr("y", -9)
+      .text(function(d) { return d; });
+
+  // Add and store a brush for each axis.
+  g.append("g")
+      .attr("class", "brush")
+      .each(function(d) {
+        d3.select(this).call(y[d].brush = d3.svg.brush().y(y[d]).on("brushstart", brushstart).on("brush", brush).on('brushend', brushend));
+      })
+    .selectAll("rect")
+      .attr("x", -8)
+      .attr("width", 16);
+
+
+
+});
+
+
+function position(d) {
+  var v = dragging[d];
+  return v == null ? x(d) : v;
+}
+
+function transition(g) {
+  return g.transition().duration(500);
+}
+
+// Returns the path for a given data point.
+function path(d) {
+  var p = line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+  return p;
+}
+
+function brushstart() {
+  d3.event.sourceEvent.stopPropagation();
+}
+
+function brushend(d) {
+  showLineChart(d)
+}
+
+// Handles a brush event, toggling the display of foreground lines.
+function brush() {
+  var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
+      extents = actives.map(function(p) { return y[p].brush.extent(); });
+  foreground.style("display", function(d) {
+    return actives.every(function(p, i) {
+      var selection = d[p];
+
+      // Make Brushing work for categorial axis
+      if (p == 'Region Name' || p == 'Year') { 
+        selection = y[p](d[p]);
+      }
+
+      return extents[i][0] <= selection && selection <= extents[i][1];
+    }) ? null : "none";
+  });
+}
+
+function colorIntensity(hex, lum) {
+
+  // validate hex string
+  hex = String(hex).replace(/[^0-9a-f]/gi, '');
+  if (hex.length < 6) {
+    hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  }
+  lum = lum || 0;
+
+  // convert to decimal and change luminosity
+  var rgb = "#", c, i;
+  for (i = 0; i < 3; i++) {
+    c = parseInt(hex.substr(i*2,2), 16);
+    c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+    rgb += ("00"+c).substr(c.length);
+  }
+
+  return rgb;
 }

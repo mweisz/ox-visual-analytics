@@ -86,15 +86,10 @@ function aggregateData(data, dimName) {
     }
 
     // Transform data into a list of objects
-    var output = [
-        {"year": "1990", "avg" : averages[0]},
-        {"year": "1995", "avg" : averages[1]},
-        {"year": "2000", "avg" : averages[2]},
-        {"year": "2005", "avg" : averages[3]},
-        {"year": "2010", "avg" : averages[4]},
-        {"year": "2015", "avg" : averages[5]}
-
-    ]
+    var output = [];
+    for (var i = 0; i < years.length; i++) {
+        output.push({"year": years[i], "avg": averages[i]});
+    }
 
     return output;
 }

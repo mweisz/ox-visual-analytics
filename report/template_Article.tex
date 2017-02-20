@@ -1,5 +1,8 @@
 \documentclass[]{article}
 
+\usepackage{graphicx}
+\usepackage{float}
+
 %opening
 \title{Visual Analytics \\ Practical 3}
 \author{Michael Weisz}
@@ -28,7 +31,18 @@ This level asked for a adaptation of an existing parallel coordinate plot in ord
 
 The resulting plot contain seven axes for each of the 19 data points and is shown below. 
 
-% TODO Add screenshot of plot level 1
+
+\begin{figure}[t]
+
+	\centering
+	\makebox[\textwidth][c]{
+	\includegraphics[width=1.3\textwidth]{img/level-1}
+}
+	\caption{Parallel coordinate plot for level 1 with brushing}
+\end{figure}
+
+
+
 
 
 
@@ -36,6 +50,15 @@ The resulting plot contain seven axes for each of the 19 data points and is show
 This level asked to combine multiple datasets and colour code the lines in the graph depending on their \emph{region} dimension. 
 
 In addition, the dataset contained categorical data for which the creation of the axes and the implementation of the brushing functionality had to be adapted.
+
+\begin{figure}[t]
+	
+	\centering
+	\makebox[\textwidth][c]{
+		\includegraphics[width=1.3\textwidth]{img/level-2}
+	}
+	\caption{Parallel coordinate plot for level 2 with colour coding}
+\end{figure}
 
 \paragraph{Colour Coding} The following excerpt of the source code describes how the lines are drawn in different colours depending on their \emph{region} attribute. 
 % TODO: Add source code for color coding
@@ -52,7 +75,20 @@ In addition, the dataset contained categorical data for which the creation of th
 
 
 \section*{Level 3}
-The third and optional level asked for a way to show the temporal relationship of the 
+The third and optional level asked for a way to show the temporal relationship of the \emph{world economy} dataset. One way to achieve this, is by offering a separate line chart which displays an aggregation (in this case, the average) when clicking on a certain axis in the parallel coordinate plot. 
+
+\begin{figure}[t]
+	
+	\centering
+	\makebox[\textwidth][c]{
+		\includegraphics[width=1.3\textwidth]{img/level-3}
+	}
+	\caption{Parallel coordinate plot for level 3 with additional time series plot after clicking on axis}
+\end{figure}
+
+In addition, data points which have a common \emph{country} attribute are drawn in the same colour but with different saturations depending on their \emph{year} attribute (more recent is darker). 
+
+The  
 
 
 \end{document}

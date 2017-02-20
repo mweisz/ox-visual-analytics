@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.1.29)  20 FEB 2017 15:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.1.29)  20 FEB 2017 21:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -63,35 +63,72 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@float@everytoks=\toks16
 \@floatcapt=\box27
 )
+(/usr/local/texlive/2015/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip10
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count89
+\lst@gtempboxa=\box28
+\lst@token=\toks17
+\lst@length=\count90
+\lst@currlwidth=\dimen105
+\lst@column=\count91
+\lst@pos=\count92
+\lst@lostspace=\dimen106
+\lst@width=\dimen107
+\lst@newlines=\count93
+\lst@lineno=\count94
+\lst@maxwidth=\dimen108
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2014/09/06 1.5e (Carsten Heinz)
+\c@lstnumber=\count95
+\lst@skipnumbers=\count96
+\lst@framebox=\box29
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2014/09/06 1.5e listings configuration
+))
+Package: listings 2014/09/06 1.5e (Carsten Heinz)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2014/10/28 v1.1a Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 142.
+)
 (./template_Article.aux)
 \openout1 = `template_Article.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
 
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count89
-\scratchdimen=\dimen105
-\scratchbox=\box28
-\nofMPsegments=\count90
-\nofMParguments=\count91
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count92
-\MPscratchDim=\dimen106
-\MPnumerator=\count93
-\makeMPintoPDFobject=\count94
-\everyMPtoPDFconversion=\toks18
+\scratchcounter=\count97
+\scratchdimen=\dimen109
+\scratchbox=\box30
+\nofMPsegments=\count98
+\nofMParguments=\count99
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count100
+\MPscratchDim=\dimen110
+\MPnumerator=\count101
+\makeMPintoPDFobject=\count102
+\everyMPtoPDFconversion=\toks19
 ) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -140,55 +177,89 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
+\c@lstlisting=\count103
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 12.
+(Font)              <12> on input line 60.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 12.
+(Font)              <8> on input line 60.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 12.
+(Font)              <6> on input line 60.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 68.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 68.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 73.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 73.
 
 <img/level-1.png, id=1, 1320.935pt x 770.88pt>
 File: img/level-1.png Graphic file (type png)
  <use img/level-1.png>
-Package pdftex.def Info: img/level-1.png used on input line 40.
+Package pdftex.def Info: img/level-1.png used on input line 93.
 (pdftex.def)             Requested size: 448.50105pt x 261.74286pt.
 
-<img/level-2.png, id=3, 1386.17876pt x 749.80125pt>
-File: img/level-2.png Graphic file (type png)
- <use img/level-2.png>
-Package pdftex.def Info: img/level-2.png used on input line 59.
-(pdftex.def)             Requested size: 448.50105pt x 242.59561pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<img/level-3.png, id=15, 945.5325pt x 925.4575pt>
+<img/level-2.png, id=17, 1386.17876pt x 749.80125pt>
+File: img/level-2.png Graphic file (type png)
+ <use img/level-2.png>
+Package pdftex.def Info: img/level-2.png used on input line 112.
+(pdftex.def)             Requested size: 448.50105pt x 242.59561pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <8> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 120.
+[2 <./img/level-1.png>]
+Missing character: There is no Â in font cmtt8!
+Missing character: There is no   in font cmtt8!
+ [3 <./img/level-2.png>]
+Missing character: There is no Â in font cmtt8!
+Missing character: There is no   in font cmtt8!
+
+<img/level-3.png, id=28, 945.5325pt x 925.4575pt>
 File: img/level-3.png Graphic file (type png)
  <use img/level-3.png>
-Package pdftex.def Info: img/level-3.png used on input line 85.
+Package pdftex.def Info: img/level-3.png used on input line 188.
 (pdftex.def)             Requested size: 448.50105pt x 438.98967pt.
 
-[2 <./img/level-1.png>] [3 <./img/level-2.png>] [4 <./img/level-3.png>]
-(./template_Article.aux) ) 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4] [5] [6] [7 <./img/level-3.png>] (./template_Article.aux) ) 
 Here is how much of TeX's memory you used:
- 1562 strings out of 493089
- 22517 string characters out of 6134842
- 81629 words of memory out of 5000000
- 5048 multiletter control sequences out of 15000+600000
- 7934 words of font info for 28 fonts, out of 8000000 for 9000
+ 3018 strings out of 493089
+ 43483 string characters out of 6134842
+ 247729 words of memory out of 5000000
+ 6479 multiletter control sequences out of 15000+600000
+ 8270 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,6n,23p,339b,240s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmr17.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmti10.pfb>
-Output written on template_Article.pdf (4 pages, 1797377 bytes).
+ 38i,8n,40p,359b,1504s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/201
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2015/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on template_Article.pdf (7 pages, 1856684 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 29 compressed objects within 1 object stream
+ 79 PDF objects out of 1000 (max. 8388607)
+ 52 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
